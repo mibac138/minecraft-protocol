@@ -19,6 +19,7 @@ use uuid::Uuid;
 
 pub mod chat;
 pub mod game;
+pub mod handshake;
 pub mod login;
 pub mod status;
 
@@ -276,6 +277,35 @@ impl Decoder for u8 {
 
     fn decode<R: Read>(reader: &mut R) -> Result<Self::Output, DecodeError> {
         Ok(reader.read_u8()?)
+    }
+}
+
+impl Encoder for i16 {
+    fn encode<W: Write>(&self, writer: &mut W) -> Result<(), EncodeError> {
+        Ok(writer.write_i16::<BigEndian>(*self)?)
+    }
+}
+
+impl Decoder for i16 {
+    type Output = Self;
+
+    fn decode<R: Read>(reader: &mut R) -> Result<Self::Output, DecodeError> {
+        Ok(reader.read_i16::<BigEndian>()?)
+    }
+}
+
+
+impl Encoder for u16 {
+    fn encode<W: Write>(&self, writer: &mut W) -> Result<(), EncodeError> {
+        Ok(writer.write_u16::<BigEndian>(*self)?)
+    }
+}
+
+impl Decoder for u16 {
+    type Output = Self;
+
+    fn decode<R: Read>(reader: &mut R) -> Result<Self::Output, DecodeError> {
+        Ok(reader.read_u16::<BigEndian>()?)
     }
 }
 
