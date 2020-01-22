@@ -9,7 +9,7 @@ use std::string::FromUtf8Error;
 use byteorder::{BigEndian, ReadBytesExt, WriteBytesExt};
 use mc_varint::{VarIntRead, VarIntWrite};
 use serde_json::error::Error as JsonError;
-use uuid::parser::ParseError as UuidParseError;
+use uuid::Error as UuidError;
 
 use crate::chat::Message;
 use nbt::decode::TagDecodeError;
@@ -85,8 +85,8 @@ pub enum DecodeError {
     },
     /// Boolean are parsed from byte. Valid byte value are 0 or 1.
     NonBoolValue,
-    UuidParseError {
-        uuid_parse_error: UuidParseError,
+    UuidError {
+        uuid_error: UuidError,
     },
     // Type id was not parsed as valid enum value.
     UnknownEnumType {
@@ -115,9 +115,9 @@ impl From<FromUtf8Error> for DecodeError {
     }
 }
 
-impl From<UuidParseError> for DecodeError {
-    fn from(uuid_parse_error: UuidParseError) -> Self {
-        DecodeError::UuidParseError { uuid_parse_error }
+impl From<UuidError> for DecodeError {
+    fn from(uuid_error: UuidError) -> Self {
+        DecodeError::UuidError { uuid_error: uuid_error }
     }
 }
 
