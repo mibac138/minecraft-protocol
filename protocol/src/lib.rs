@@ -16,6 +16,10 @@ use nbt::decode::TagDecodeError;
 use nbt::CompoundTag;
 use num_traits::{FromPrimitive, ToPrimitive};
 use uuid::Uuid;
+use crate::handshake::HandshakeServerBoundPacket;
+use crate::login::{LoginServerBoundPacket, LoginClientBoundPacket};
+use crate::status::{StatusServerBoundPacket, StatusClientBoundPacket};
+use crate::game::{GameServerBoundPacket, GameClientBoundPacket};
 
 pub mod chat;
 pub mod game;
@@ -28,6 +32,21 @@ pub const PROTOCOL_VERSION: u32 = 498;
 /// Protocol limits maximum string length.
 const STRING_MAX_LENGTH: u16 = 32_768;
 const HYPHENATED_UUID_LENGTH: u16 = 36;
+
+pub enum ServerBoundPacket {
+    Handshake(HandshakeServerBoundPacket),
+    Status(StatusServerBoundPacket),
+    Login(LoginServerBoundPacket),
+    Game(GameServerBoundPacket),
+}
+
+pub enum ClientBoundPacket {
+    Handshake(HandshakeClientBoundPacket),
+    Status(StatusClientBoundPacket),
+    Login(LoginClientBoundPacket),
+    Game(GameClientBoundPacket),
+}
+
 
 /// Possible errors while encoding packet.
 #[derive(Debug)]
